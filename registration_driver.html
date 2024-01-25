@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .message {
+            color: red;
+        }
+
+        .available {
+            color: green;
+        }
+
+        .checking {
+        	color: gray;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Driver Registration</h2>
+<form id="registrationForm" onsubmit="submitForm(); return false;">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required oninput="checkUsername()">
+    <span id="usernameMessage" class="message hidden"></span>
+    <br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <span id="emailMessage" class="message hidden"></span>
+    <br>
+
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="tel" id="phoneNumber" name="phoneNumber" required>
+    <span id="phoneMessage" class="message hidden"></span>
+    <br>
+
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" required>
+    <br>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" required>
+    <br>
+
+    <label for="nic">NIC:</label>
+    <input type="text" id="nic" name="nic" required>
+    <br>
+
+    <label for="licence">Licence:</label>
+    <input type="text" id="licence" name="licence" required>
+    <br>
+
+    <button type="submit" id="registerButton" disabled>Register</button>
+</form>
+
+<script src="checkAvailability.js"></script>
+<script>
+    function checkUsername() {
+        const username = document.getElementById('username').value;
+        const usernameMessage = document.getElementById('usernameMessage');
+
+        if (username.length < 4 || !/^[\w]+$/.test(username)) {
+            usernameMessage.textContent = 'Invalid username';
+            usernameMessage.className = 'message';
+        } else {
+        usernameMessage.textContent = 'Checking Username';
+                usernameMessage.className = 'checking';
+                
+            checkAvailabilityInDatabase('username', username).then(isAvailable => {
+                if (isAvailable) {
+                    usernameMessage.textContent = 'Username available';
+                    usernameMessage.className = 'available';
+                } else {
+                    usernameMessage.textContent = 'Username already exists';
+                    usernameMessage.className = 'message';
+                }
+            });
+        }
+    }
+
+    function submitForm() {
+        const email = document.getElementById('email').value;
+        const phoneNumber = document.getElementById('phoneNumber').value;
+
+        checkAvailabilityInDatabase('email', email).then(isEmailAvailable => {
+            checkAvailabilityInDatabase('phone', phoneNumber).then(isPhoneAvailable => {
+                const emailMessage = document.getElementById('emailMessage');
+                const phoneMessage = document.getElementById('phoneMessage');
+
+                if (!isEmailAvailable && !isPhoneAvailable) {
+                    emailMessage.textContent = 'This email already registered';
+                    phoneMessage.textContent = 'This phone number already registered';
+                } else if (!isEmailAvailable) {
+                    emailMessage.textContent = 'This email already registered';
+                } else if (!isPhoneAvailable) {
+                    phoneMessage.textContent = 'This phone number already registered';
+                } else {
+                    const registrationData = {
+                        username: document.getElementById('username').value,
+                        email: email,
+                        phoneNumber: phoneNumber,
+                        firstName: document.getElementById('firstName').value,
+                        lastName: document.getElementById('lastName').value,
+                        nic: document.getElementById('nic').value,
+                        licence: document.getElementById('licence').value,
+                        accountStatus: 'PENDING_VERIFICATION',
+                        availability: 'INACTIVE'
+                    };
+
+                    fetch('registerDriver.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(registrationData),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data); // Log the server response
+                        // Display success message or redirect the user
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+    }
+
+    document.addEventListener('input', function () {
+        const registerButton = document.getElementById('registerButton');
+        const allInputs = document.querySelectorAll('input[required]');
+        const isFormValid = Array.from(allInputs).every(input => input.value.trim() !== '');
+        registerButton.disabled = !isFormValid;
+    });
+</script>
+
+</body>
+</html>
