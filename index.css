@@ -1,0 +1,166 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: 'Outfit', sans-serif;
+}
+
+header {
+    background-color: #003049;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.driver-body{
+    background-color: rgb(235, 234, 234);
+}
+
+.driver-details button{
+    margin-top: 20px;
+}
+
+/* Nav Manu */
+.container{
+    width: 80%;
+    margin-inline: auto;
+    
+}
+
+nav{
+    display: grid;
+    place-items: center;
+    height: 3.8rem;
+    position:static;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background-color: #fff;
+    border-bottom: 1px solid rgb(214, 212, 212);
+}
+
+.nav_container{
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    align-items: center;
+}
+
+.nav_left img{
+    width: 200px;
+}
+
+.profile-img img{
+    height: 40px;
+
+}
+
+.nav_left{
+    display: flex;
+    justify-content: center;
+    align-items:end;
+    gap: 20px;
+}
+
+.nav_profile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.profile-img{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-manu{
+    display: flex;
+    gap: 20px;
+}
+
+.nav-manu a{
+    text-decoration: none;
+    text-align: center;
+    color: black;
+    font-weight: 500;
+}
+
+.nav-manu a:hover{
+    color: #fca311;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.sections{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+section {
+    width: 100%; /* Full width on small screens */
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    font-weight: 500;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+#map {
+    height: 400px;
+    width: 100%; /* Adjust height for smaller screens */
+}
+
+button {
+    display: block;
+    width: 100%; /* Full width on small screens */
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px; /* Add spacing between buttons on small screens */
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+@media screen and (min-width: 600px) {
+    section {
+        width: 48%; /* Two columns on screens wider than 600px */
+    }
+}
+
+@media screen and (min-width: 800px) {
+    section {
+        width: 30%; /* Three columns on screens wider than 800px */
+    }
+}
